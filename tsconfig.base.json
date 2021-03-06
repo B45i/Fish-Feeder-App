@@ -9,8 +9,6 @@
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "importHelpers": true,
-    "fullTemplateTypeCheck": true,
     "strictTemplates": true,
     "target": "es2015",
     "module": "es2020",
