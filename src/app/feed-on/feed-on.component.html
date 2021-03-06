@@ -1,1 +1,35 @@
-<mat-card>Simple card</mat-card>
+<mat-tab-group>
+  <mat-tab label="Feed Time">
+    <mat-card>
+      <mat-card-title class="d-flex jc-end">
+        <button
+          mat-mini-fab
+          color="primary"
+          aria-label="Example icon button with a menu icon"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-title>
+
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Field 1</mat-label>
+          <input matInput placeholder="Placeholder" />
+          <mat-icon matSuffix>schedule</mat-icon>
+          <mat-hint>Units</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Field 2</mat-label>
+          <input matInput placeholder="Placeholder" />
+          <mat-icon matSuffix>schedule</mat-icon>
+          <mat-hint>Units</mat-hint>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+
+  <mat-tab label="Pump Time">Pump Time</mat-tab>
+
+  <mat-tab label="Aeration Time">Aeration Time</mat-tab>
+</mat-tab-group>
