@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "fish-feeder"
+    }
+  },
+  "defaultProject": "fish-feeder",
+  "cli": {
+    "analytics": false
+  }
 }
