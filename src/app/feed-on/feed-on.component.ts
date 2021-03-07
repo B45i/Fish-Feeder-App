@@ -20,7 +20,11 @@ export class FeedOnComponent implements OnInit {
     return this.form.get('feedTime') as FormArray;
   }
 
-  readonly timeValidator = [Validators.min(0), Validators.max(59)];
+  readonly timeValidator = [
+    Validators.required,
+    Validators.min(0),
+    Validators.max(59),
+  ];
 
   form = this.fb.group({
     feedTime: this.fb.array([this.newFeedTime()]),
