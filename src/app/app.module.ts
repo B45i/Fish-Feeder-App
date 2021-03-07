@@ -7,9 +7,10 @@ import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FeedOnComponent } from './feed-on/feed-on.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AboutDialogComponent } from './about-dialog/about-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, FeedOnComponent],
+  declarations: [AppComponent, FeedOnComponent, AboutDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
