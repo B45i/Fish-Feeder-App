@@ -1,6 +1,10 @@
 <mat-tab-group>
   <ng-container [formGroup]="form">
-    <mat-tab label="Feed Time">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">fastfood</mat-icon>
+        Feed Time
+      </ng-template>
       <mat-card>
         <mat-card-title class="d-flex jc-end">
           <button mat-mini-fab color="primary" (click)="onNewFeedTime()">
@@ -44,7 +48,11 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Pump Time">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">water</mat-icon>
+        Pump Time
+      </ng-template>
       <mat-card>
         <mat-card-content formGroupName="pumpTime">
           <mat-form-field appearance="outline">
@@ -78,7 +86,11 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Aeration Time">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">air</mat-icon>
+        Aeration Time
+      </ng-template>
       <mat-card>
         <mat-card-content formGroupName="aerationTime">
           <mat-form-field appearance="outline">
@@ -112,7 +124,11 @@
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="Settings">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">settings</mat-icon>
+        Settings
+      </ng-template>
       <mat-card>
         <mat-card-content formGroupName="settings">
           <mat-radio-group
@@ -141,8 +157,7 @@
 </mat-tab-group>
 
 <div class="d-flex jc-c">
-  <button mat-raised-button color="primary">Upload</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid">
+    Upload
+  </button>
 </div>
-<pre>
-    {{ form.value | json }}
-</pre>
