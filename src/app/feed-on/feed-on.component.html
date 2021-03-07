@@ -1,162 +1,167 @@
-<mat-tab-group>
-  <ng-container [formGroup]="form">
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">fastfood</mat-icon>
-        Feed Time
-      </ng-template>
-      <mat-card>
-        <mat-card-title class="d-flex jc-end">
-          <button mat-mini-fab color="primary" (click)="onNewFeedTime()">
-            <mat-icon>add</mat-icon>
-          </button>
-        </mat-card-title>
+<div class="feed-on">
+  <mat-tab-group>
+    <ng-container [formGroup]="form">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">fastfood</mat-icon>
+          Feed Time
+        </ng-template>
+        <mat-card>
+          <mat-card-title class="d-flex jc-end">
+            <button mat-mini-fab color="primary" (click)="onNewFeedTime()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-card-title>
 
-        <mat-card-content formArrayName="feedTime">
-          <div
-            class="d-flex jc-b"
-            *ngFor="
-              let feedTime of feedTimeControl.controls;
-              let i = index;
-              let c = count
-            "
-          >
+          <mat-card-content formArrayName="feedTime">
+            <div
+              class="d-flex jc-b"
+              *ngFor="
+                let feedTime of feedTimeControl.controls;
+                let i = index;
+                let c = count
+              "
+            >
+              <mat-form-field appearance="outline">
+                <mat-label>Feed Time</mat-label>
+                <input
+                  matInput
+                  placeholder="Feed Time (0 - 24)Hr"
+                  type="number"
+                  min="0"
+                  max="12"
+                  [formControl]="feedTime"
+                />
+                <mat-icon matSuffix>schedule</mat-icon>
+                <mat-hint>Hour</mat-hint>
+              </mat-form-field>
+              <button
+                mat-icon-button
+                color="warn"
+                class="delete-btn"
+                [disabled]="c <= 1"
+                (click)="onRemoveFeedTime(i)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">water</mat-icon>
+          Pump Time
+        </ng-template>
+        <mat-card>
+          <mat-card-content formGroupName="pumpTime">
             <mat-form-field appearance="outline">
-              <mat-label>Feed Time</mat-label>
+              <mat-label>On Time</mat-label>
               <input
-                matInput
-                placeholder="Feed Time (0 - 24)Hr"
                 type="number"
+                max="59"
                 min="0"
-                max="12"
-                [formControl]="feedTime"
+                matInput
+                placeholder="On Time In Minutes"
+                formControlName="onTime"
               />
               <mat-icon matSuffix>schedule</mat-icon>
-              <mat-hint>Hour</mat-hint>
+              <mat-hint>Minutes</mat-hint>
             </mat-form-field>
-            <button
-              mat-icon-button
-              color="warn"
-              class="delete-btn"
-              [disabled]="c <= 1"
-              (click)="onRemoveFeedTime(i)"
+
+            <mat-form-field appearance="outline">
+              <mat-label>Off Time</mat-label>
+              <input
+                type="number"
+                max="59"
+                min="0"
+                matInput
+                placeholder="Off Time In Minutes"
+                formControlName="offTime"
+              />
+              <mat-icon matSuffix>schedule</mat-icon>
+              <mat-hint>Minutes</mat-hint>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">air</mat-icon>
+          Aeration Time
+        </ng-template>
+        <mat-card>
+          <mat-card-content formGroupName="aerationTime">
+            <mat-form-field appearance="outline">
+              <mat-label>On Time</mat-label>
+              <input
+                type="number"
+                max="59"
+                min="0"
+                matInput
+                placeholder="On Time In Minutes"
+                formControlName="onTime"
+              />
+              <mat-icon matSuffix>schedule</mat-icon>
+              <mat-hint>Minutes</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Off Time</mat-label>
+              <input
+                type="number"
+                max="59"
+                min="0"
+                matInput
+                placeholder="Off Time In Minutes"
+                formControlName="offTime"
+              />
+              <mat-icon matSuffix>schedule</mat-icon>
+              <mat-hint>Minutes</mat-hint>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">settings</mat-icon>
+          Settings
+        </ng-template>
+        <mat-card>
+          <mat-card-content formGroupName="settings">
+            <mat-radio-group
+              aria-label="Select Time Mode"
+              formControlName="useSystemTime"
             >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
+              <mat-radio-button class="mr-1" [value]="true"
+                >Use System Time</mat-radio-button
+              >
+              <mat-radio-button [value]="false">Set Time</mat-radio-button>
+            </mat-radio-group>
 
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">water</mat-icon>
-        Pump Time
-      </ng-template>
-      <mat-card>
-        <mat-card-content formGroupName="pumpTime">
-          <mat-form-field appearance="outline">
-            <mat-label>On Time</mat-label>
-            <input
-              type="number"
-              max="59"
-              min="0"
-              matInput
-              placeholder="On Time In Minutes"
-              formControlName="onTime"
-            />
-            <mat-icon matSuffix>schedule</mat-icon>
-            <mat-hint>Minutes</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Off Time</mat-label>
-            <input
-              type="number"
-              max="59"
-              min="0"
-              matInput
-              placeholder="Off Time In Minutes"
-              formControlName="offTime"
-            />
-            <mat-icon matSuffix>schedule</mat-icon>
-            <mat-hint>Minutes</mat-hint>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
-
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">air</mat-icon>
-        Aeration Time
-      </ng-template>
-      <mat-card>
-        <mat-card-content formGroupName="aerationTime">
-          <mat-form-field appearance="outline">
-            <mat-label>On Time</mat-label>
-            <input
-              type="number"
-              max="59"
-              min="0"
-              matInput
-              placeholder="On Time In Minutes"
-              formControlName="onTime"
-            />
-            <mat-icon matSuffix>schedule</mat-icon>
-            <mat-hint>Minutes</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Off Time</mat-label>
-            <input
-              type="number"
-              max="59"
-              min="0"
-              matInput
-              placeholder="Off Time In Minutes"
-              formControlName="offTime"
-            />
-            <mat-icon matSuffix>schedule</mat-icon>
-            <mat-hint>Minutes</mat-hint>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
-
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="tab-icon">settings</mat-icon>
-        Settings
-      </ng-template>
-      <mat-card>
-        <mat-card-content formGroupName="settings">
-          <mat-radio-group
-            aria-label="Select Time Mode"
-            formControlName="useSystemTime"
-          >
-            <mat-radio-button class="mr-1" [value]="true"
-              >Use System Time</mat-radio-button
+            <mat-form-field
+              appearance="outline"
+              class="mt-1"
+              *ngIf="!useSystemTime"
             >
-            <mat-radio-button [value]="false">Set Time</mat-radio-button>
-          </mat-radio-group>
+              <mat-label>Custom Time</mat-label>
+              <input type="time" matInput formControlName="customTime" />
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+    </ng-container>
+  </mat-tab-group>
 
-          <mat-form-field
-            appearance="outline"
-            class="mt-1"
-            *ngIf="!useSystemTime"
-          >
-            <mat-label>Custom Time</mat-label>
-            <input type="time" matInput formControlName="customTime" />
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
-  </ng-container>
-</mat-tab-group>
-
-<div class="d-flex jc-c">
-  <button mat-raised-button color="primary" [disabled]="form.invalid">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="form.invalid"
+    class="btn-upload"
+  >
     Upload
   </button>
 </div>

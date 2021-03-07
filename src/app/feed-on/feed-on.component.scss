@@ -1,7 +1,14 @@
+.feed-on {
+  height: calc(100vh - 75px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 mat-card {
   margin: 1rem;
-  //   max-height: calc(100vh - 250px);
-  //   overflow: auto;
+  max-height: calc(100vh - 240px);
+  overflow: auto;
 }
 
 mat-form-field {
@@ -14,4 +21,8 @@ mat-form-field {
 
 .tab-icon {
   margin-right: 8px;
+}
+
+.btn-upload {
+  margin: 0 1rem;
 }
