@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FeedOnComponent } from './feed-on/feed-on.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, FeedOnComponent],
@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
     MaterialModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
