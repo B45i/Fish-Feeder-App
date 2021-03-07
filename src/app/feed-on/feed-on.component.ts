@@ -53,6 +53,10 @@ export class FeedOnComponent implements OnInit {
   }
 
   private newFeedTime(val?): FormControl {
-    return this.fb.control(val, [Validators.required, ...this.timeValidator]);
+    return this.fb.control(val, [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(12),
+    ]);
   }
 }
