@@ -20,21 +20,27 @@ export class FeedOnComponent implements OnInit {
     return this.form.get('feedTime') as FormArray;
   }
 
-  readonly timeValidator = [
+  readonly minutesValidator = [
     Validators.required,
     Validators.min(0),
     Validators.max(59),
   ];
 
+  readonly hourValidator = [
+    Validators.required,
+    Validators.min(0),
+    Validators.max(23),
+  ];
+
   form = this.fb.group({
     feedTime: this.fb.array([this.newFeedTime()]),
     pumpTime: this.fb.group({
-      onTime: ['', this.timeValidator],
-      offTime: ['', this.timeValidator],
+      onTime: ['', this.minutesValidator],
+      offTime: ['', this.minutesValidator],
     }),
     aerationTime: this.fb.group({
-      onTime: ['', this.timeValidator],
-      offTime: ['', this.timeValidator],
+      onTime: ['', this.hourValidator],
+      offTime: ['', this.hourValidator],
     }),
     settings: this.fb.group({
       useSystemTime: [true],
@@ -57,10 +63,6 @@ export class FeedOnComponent implements OnInit {
   }
 
   private newFeedTime(val?): FormControl {
-    return this.fb.control(val, [
-      Validators.required,
-      Validators.min(0),
-      Validators.max(12),
-    ]);
+    return this.fb.control(val, this.hourValidator);
   }
 }
