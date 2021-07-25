@@ -3,6 +3,7 @@ import {
   FormArray,
   FormBuilder,
   FormControl,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 
@@ -18,6 +19,10 @@ export class FeedOnComponent implements OnInit {
 
   get feedTimeControl(): FormArray {
     return this.form.get('feedTime') as FormArray;
+  }
+
+  get feedTimeControls(): Array<FormGroup> {
+    return this.feedTimeControl['controls'] as Array<FormGroup>;
   }
 
   readonly minutesValidator = [
@@ -50,9 +55,7 @@ export class FeedOnComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {}
 
-  ngOnInit(): void {
-    console.log(this.newFeedTime());
-  }
+  ngOnInit(): void {}
 
   onNewFeedTime(): void {
     this.feedTimeControl.push(this.newFeedTime());
@@ -62,7 +65,10 @@ export class FeedOnComponent implements OnInit {
     this.feedTimeControl.removeAt(i);
   }
 
-  private newFeedTime(val?): FormControl {
-    return this.fb.control(val, this.hourValidator);
+  private newFeedTime(feedTime?, feedDuration?): FormGroup {
+    return this.fb.group({
+      feedTime: [feedTime, this.hourValidator],
+      feedDuration: [feedDuration],
+    });
   }
 }
