@@ -15,7 +15,7 @@
 
           <mat-card-content formArrayName="feedTime">
             <div
-              class="d-flex jc-b gap-1"
+              class="d-flex jc-b mt-1"
               *ngFor="
                 let feed of feedTimeControls;
                 let i = index;
@@ -23,32 +23,34 @@
               "
               [formGroup]="feed"
             >
-              <mat-form-field appearance="outline">
-                <mat-label>Feed Time</mat-label>
-                <input
-                  matInput
-                  placeholder="Feed Time (0 - 23)Hr"
-                  type="number"
-                  min="0"
-                  max="12"
-                  formControlName="feedTime"
-                />
-                <mat-icon matSuffix>schedule</mat-icon>
-                <mat-hint>Hour</mat-hint>
-              </mat-form-field>
+              <div class="gap-1 d-flex w-100 feed-ctrl">
+                <mat-form-field appearance="outline">
+                  <mat-label>Feed Time</mat-label>
+                  <input
+                    matInput
+                    placeholder="Feed Time (0 - 23)Hr"
+                    type="number"
+                    min="0"
+                    max="12"
+                    formControlName="feedTime"
+                  />
+                  <mat-icon matSuffix>schedule</mat-icon>
+                  <mat-hint>Hour</mat-hint>
+                </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label>Feed Duration</mat-label>
-                <input
-                  matInput
-                  placeholder="Feed Duration"
-                  type="number"
-                  min="0"
-                  formControlName="feedDuration"
-                />
-                <mat-icon matSuffix>schedule</mat-icon>
-                <mat-hint>Seconds</mat-hint>
-              </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Feed Duration</mat-label>
+                  <input
+                    matInput
+                    placeholder="Feed Duration"
+                    type="number"
+                    min="0"
+                    formControlName="feedDuration"
+                  />
+                  <mat-icon matSuffix>schedule</mat-icon>
+                  <mat-hint>Seconds</mat-hint>
+                </mat-form-field>
+              </div>
               <button
                 mat-icon-button
                 color="warn"

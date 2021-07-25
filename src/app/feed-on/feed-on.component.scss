@@ -26,3 +26,13 @@ mat-form-field {
 .btn-upload {
   margin: 0 1rem;
 }
+
+.feed-ctrl {
+  flex-direction: row;
+}
+
+@media only screen and (max-width: 600px) {
+  .feed-ctrl {
+    flex-direction: column;
+  }
+}
