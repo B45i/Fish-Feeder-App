@@ -12,6 +12,51 @@
 
 AsyncWebServer server(80);
 
+String demoJson = "  {\n"
+"  \"feedTimes\": [\n"
+"    {\n"
+"      \"feedTime\": 2,\n"
+"      \"feedDuration\": 2\n"
+"    },\n"
+"    {\n"
+"      \"feedTime\": 2,\n"
+"      \"feedDuration\": 2\n"
+"    },\n"
+"    {\n"
+"      \"feedTime\": 2,\n"
+"      \"feedDuration\": 2\n"
+"    },\n"
+"    {\n"
+"      \"feedTime\": 2,\n"
+"      \"feedDuration\": 2\n"
+"    },\n"
+"    {\n"
+"      \"feedTime\": 2,\n"
+"      \"feedDuration\": 2\n"
+"    },\n"
+"    {\n"
+"      \"feedTime\": 2,\n"
+"      \"feedDuration\": 2\n"
+"    },\n"
+"    {\n"
+"      \"feedTime\": 2,\n"
+"      \"feedDuration\": 22\n"
+"    }\n"
+"  ],\n"
+"  \"pumpTime\": {\n"
+"    \"onTime\": 2,\n"
+"    \"offTime\": 2\n"
+"  },\n"
+"  \"aerationTime\": {\n"
+"    \"onTime\": 2,\n"
+"    \"offTime\": 2\n"
+"  },\n"
+"  \"settings\": {\n"
+"    \"useSystemTime\": true,\n"
+"    \"customTime\": \"\"\n"
+"  }\n"
+"}";
+
 void setup()
 {
   Serial.begin(115200);
@@ -41,13 +86,13 @@ void setup()
 
   server.on("/settings", HTTP_GET, [](AsyncWebServerRequest * request) {
     // TODO: Send current file values
-    request->send(200, "application/json", "done");
+    request->send(200, "application/json", demoJson);
   });
 
 
   AsyncCallbackJsonWebHandler* handler =
   new AsyncCallbackJsonWebHandler("/settings", [](AsyncWebServerRequest * request, JsonVariant & json) {
-    StaticJsonDocument<512> doc = json.as<JsonObject>();
+    StaticJsonDocument<768> doc = json.as<JsonObject>();
 
     for (JsonObject feedItem : doc["feedTimes"].as<JsonArray>()) {
 
@@ -82,7 +127,7 @@ void setup()
     Serial.print("customTime: ");
     Serial.println(customTime);
 
-    request->send(200, "application/json", "{}");
+    request->send(200, "application/json", demoJson);
   });
 
 
