@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IFeedSettings } from '../models/dto';
 import { FeederService } from '../services/feeder.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class FeedOnComponent implements OnInit {
   }
 
   get feedTimeControl(): FormArray {
-    return this.form.get('feedTime') as FormArray;
+    return this.form.get('feedTimes') as FormArray;
   }
 
   get feedTimeControls(): Array<FormGroup> {
@@ -33,7 +34,7 @@ export class FeedOnComponent implements OnInit {
   ];
 
   form = this.fb.group({
-    feedTime: this.fb.array([this.newFeedTime()]),
+    feedTimes: this.fb.array([]),
     pumpTime: this.fb.group({
       onTime: ['', this.minutesValidator],
       offTime: ['', this.minutesValidator],
@@ -63,7 +64,13 @@ export class FeedOnComponent implements OnInit {
   }
 
   getSavedSettings() {
-    this.feederService.getSettings().subscribe((setting) => {
+    this.feederService.getSettings().subscribe((setting: IFeedSettings) => {
+      (setting.feedTimes || []).forEach((ft) =>
+        this.feedTimeControl.push(
+          this.newFeedTime(ft.feedTime, ft.feedDuration)
+        )
+      );
+
       this.form.patchValue(setting);
     });
   }

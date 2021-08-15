@@ -19,7 +19,7 @@ export interface Settings {
 }
 
 export interface IFeedSettings {
-  feedTime: FeedTime[];
+  feedTimes: FeedTime[];
   pumpTime: PumpTime;
   aerationTime: AerationTime;
   settings: Settings;
