@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  bseURL: '/',
+  bseURL: document.location.origin,
 };
