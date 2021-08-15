@@ -1,15 +1,15 @@
 void readDataFromFile()
 {
   Serial.println(F("Inizializing FS..."));
-  if (LittleFS.begin())
+  if (SPIFFS.begin())
   {
-    Serial.println(F("LittleFS mounted correctly."));
+    Serial.println(F("SPIFFS mounted correctly."));
   }
   else
   {
     Serial.println(F("!An error occurred during LittleFS mounting"));
   }
-  File valueFile = LittleFS.open("/values.txt", "r");
+  File valueFile = SPIFFS.open("/values.txt", "r");
   if (!valueFile)
   {
     Serial.println("file open failed");
@@ -23,7 +23,7 @@ void readDataFromFile()
 
 void writeDataToFile()
 {
-  File valueFile = LittleFS.open("/values.txt", "w");
+  File valueFile = SPIFFS.open("/values.txt", "w");
   if (!valueFile)
   {
     // File not found

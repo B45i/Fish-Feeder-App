@@ -5,7 +5,8 @@ void getData()
 
   StaticJsonDocument<384> doc;
 
-  // Only for testing the file system. data = "  {\r\n  \"feedTime\": [\r\n    {\r\n      \"feedTime\": 7,\r\n      \"feedDuration\": 10\r\n    }\r\n  ],\r\n  \"pumpTime\": {\r\n    \"onTime\": 20,\r\n    \"offTime\": 40\r\n  },\r\n  \"aerationTime\": {\r\n    \"onTime\": 7,\r\n    \"offTime\": 23\r\n  },\r\n  \"settings\": {\r\n    \"useSystemTime\": false,\r\n    \"customTime\": \"16:32\"\r\n  }\r\n}";
+  // Only for testing the file system.
+  data = "  {\r\n  \"feedTime\": [\r\n    {\r\n      \"feedTime\": 7,\r\n      \"feedDuration\": 10\r\n    }\r\n  ],\r\n  \"pumpTime\": {\r\n    \"onTime\": 20,\r\n    \"offTime\": 40\r\n  },\r\n  \"aerationTime\": {\r\n    \"onTime\": 7,\r\n    \"offTime\": 23\r\n  },\r\n  \"settings\": {\r\n    \"useSystemTime\": false,\r\n    \"customTime\": \"16:32\"\r\n  }\r\n}";
   
   DeserializationError error = deserializeJson(doc, data);
 
@@ -50,5 +51,6 @@ void getData()
   Serial.println(set_hour);
   Serial.println(set_minute);
 
-  // Only for testing the file system. writeDataToFile();
+  // Only for testing the file system.
+  writeDataToFile();
 }

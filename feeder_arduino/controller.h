@@ -1,9 +1,8 @@
 unsigned long int feedDurationMillis;
 unsigned long int feedTimeStartMillis;
-unsigned long int pumpOnDurationMillis = (pumpOnDuration * 60 * 1000);
-unsigned long int pumpOffDurationMillis = (pumpOffDuration * 60 * 1000);
+unsigned long int pumpOnDurationMillis;
+unsigned long int pumpOffDurationMillis;
 unsigned long previousPumpMillis = 0;
-unsigned int interval = pumpOnDurationMillis;
 boolean pumpState = true;
 
 void initPins()
@@ -11,12 +10,14 @@ void initPins()
   pinMode(feederPin, OUTPUT);
   pinMode(airPin, OUTPUT);
   pinMode(pumpPin, OUTPUT);
+  pumpOnDurationMillis = (pumpOnDuration * 60 * 1000);
+  pumpOffDurationMillis = (pumpOffDuration * 60 * 1000);
 }
 
 void controlFeed()
 {
   DateTime now = rtc.now();
-  
+
   for (int i = 0; i <= 10; i++)
   {
     if (now.hour() == feedTimeArray[i] && now.minute() == 0 && now.second() < 2 && !feedTimeStart)
@@ -36,22 +37,24 @@ void controlFeed()
 
 void controlPump()
 {
-  digitalWrite(pumpPin, pumpState);
-
-  unsigned long currentMillis = millis();
-  if ((unsigned long)(currentMillis - previousPumpMillis) >= interval)
+  if (pumpState == HIGH)
   {
-    if (pumpState)
+    if ((millis() - previousPumpMillis) >= pumpOnDurationMillis)
     {
-      interval = pumpOffDurationMillis;
+      pumpState = LOW;
+      previousPumpMillis = millis();
     }
-    else
-    {
-      interval = pumpOnDurationMillis;
-    }
-    pumpState = !(pumpState);
-    previousPumpMillis = currentMillis;
   }
+  else
+  {
+    if ((millis() - previousPumpMillis) >= pumpOffDurationMillis)
+    {
+      pumpState = HIGH;
+      previousPumpMillis = millis();
+    }
+  }
+
+  digitalWrite(pumpPin, pumpState);
 }
 
 void controlAir()
