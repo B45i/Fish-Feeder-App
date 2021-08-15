@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FeederService } from '../services/feeder.service';
 
 @Component({
   selector: 'app-feed-on',
@@ -53,9 +48,11 @@ export class FeedOnComponent implements OnInit {
     }),
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private feederService: FeederService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getSavedSettings();
+  }
 
   onNewFeedTime(): void {
     this.feedTimeControl.push(this.newFeedTime());
@@ -63,6 +60,16 @@ export class FeedOnComponent implements OnInit {
 
   onRemoveFeedTime(i: number): void {
     this.feedTimeControl.removeAt(i);
+  }
+
+  getSavedSettings() {
+    this.feederService.getSettings().subscribe((setting) => {
+      this.form.patchValue(setting);
+    });
+  }
+
+  saveSettings() {
+    this.feederService.saveSettings(this.form.value).subscribe();
   }
 
   private newFeedTime(feedTime?, feedDuration?): FormGroup {

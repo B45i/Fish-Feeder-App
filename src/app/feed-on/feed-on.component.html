@@ -175,8 +175,9 @@
   <button
     mat-raised-button
     color="primary"
-    [disabled]="form.invalid"
     class="btn-upload"
+    [disabled]="form.invalid"
+    (click)="saveSettings()"
   >
     Upload
   </button>
