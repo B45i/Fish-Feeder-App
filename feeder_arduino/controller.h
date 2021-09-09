@@ -1,7 +1,4 @@
-unsigned long int feedDurationMillis;
 unsigned long int feedTimeStartMillis;
-unsigned long int pumpOnDurationMillis;
-unsigned long int pumpOffDurationMillis;
 unsigned long previousPumpMillis = 0;
 boolean pumpState = true;
 
@@ -10,8 +7,6 @@ void initPins()
   pinMode(feederPin, OUTPUT);
   pinMode(airPin, OUTPUT);
   pinMode(pumpPin, OUTPUT);
-  pumpOnDurationMillis = (pumpOnDuration * 60 * 1000);
-  pumpOffDurationMillis = (pumpOffDuration * 60 * 1000);
 }
 
 void controlFeed()
@@ -61,12 +56,26 @@ void controlAir()
 {
   DateTime now = rtc.now();
 
-  if (now.hour() == aerationOnTime && now.minute() == 0 && now.second() < 2 && !feedTimeStart)
+  if (aerationOnTime < aerationOffTime)
   {
-    digitalWrite(airPin, HIGH);
+    if ((now.hour() >= aerationOnTime) && (now.hour() < aerationOffTime))
+    {
+      digitalWrite(airPin, HIGH);
+    }
+    else
+    {
+      digitalWrite(airPin, LOW);
+    }
   }
-  if (now.hour() == aerationOffTime && now.minute() == 0 && now.second() < 2 && !feedTimeStart)
+  else
   {
-    digitalWrite(airPin, LOW);
+    if ((now.hour() < aerationOnTime) && (now.hour() > aerationOffTime))
+    {
+      digitalWrite(airPin, LOW);
+    }
+    else
+    {
+      digitalWrite(airPin, HIGH);
+    }
   }
 }

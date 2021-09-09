@@ -1,61 +1,16 @@
 #include <ESP8266WiFi.h>
 #include <ESPAsyncWebServer.h> //  https://github.com/me-no-dev/ESPAsyncWebServer and https://github.com/me-no-dev/ESPAsyncTCP
 #include <WiFiClient.h>
+#include "ArduinoJson.h"
+#include "AsyncJson.h"
 
 #include "configure.h"
 #include "fileSystem.h"
-#include "ArduinoJson.h"
-#include "AsyncJson.h"
 #include "jsonParse.h"
 #include "rtcFile.h"
 #include "controller.h"
 
 AsyncWebServer server(80);
-
-String demoJson = "  {\n"
-"  \"feedTimes\": [\n"
-"    {\n"
-"      \"feedTime\": 2,\n"
-"      \"feedDuration\": 2\n"
-"    },\n"
-"    {\n"
-"      \"feedTime\": 2,\n"
-"      \"feedDuration\": 2\n"
-"    },\n"
-"    {\n"
-"      \"feedTime\": 2,\n"
-"      \"feedDuration\": 2\n"
-"    },\n"
-"    {\n"
-"      \"feedTime\": 2,\n"
-"      \"feedDuration\": 2\n"
-"    },\n"
-"    {\n"
-"      \"feedTime\": 2,\n"
-"      \"feedDuration\": 2\n"
-"    },\n"
-"    {\n"
-"      \"feedTime\": 2,\n"
-"      \"feedDuration\": 2\n"
-"    },\n"
-"    {\n"
-"      \"feedTime\": 2,\n"
-"      \"feedDuration\": 22\n"
-"    }\n"
-"  ],\n"
-"  \"pumpTime\": {\n"
-"    \"onTime\": 2,\n"
-"    \"offTime\": 2\n"
-"  },\n"
-"  \"aerationTime\": {\n"
-"    \"onTime\": 2,\n"
-"    \"offTime\": 2\n"
-"  },\n"
-"  \"settings\": {\n"
-"    \"useSystemTime\": true,\n"
-"    \"customTime\": \"\"\n"
-"  }\n"
-"}";
 
 void setup()
 {
@@ -63,71 +18,44 @@ void setup()
   SPIFFS.begin();
   init_rtc();
   initPins();
-  readDataFromFile();
+  readJsonStringFromFile();
   getData();
 
-  // todo: set as access point
-  //  WiFi.begin("Yedu", "yeduyedu");
-  WiFi.begin("ZTE_2.4G_ExQCMa", "NullReferenceException#123");
-  WiFi.mode(WIFI_STA);
-  Serial.println("");
 
-  // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
 
-  Serial.println("");
-  Serial.print("IP address: ");
+
+  Serial.print("Setting soft-AP ... ");
+  Serial.println(WiFi.softAP("feeder", "feed1234") ? "Ready" : "Failed!");
+  IPAddress IP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(IP);
+
+  // Print ESP8266 Local IP Address
   Serial.println(WiFi.localIP());
+
+
+
 
   server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
 
   server.on("/settings", HTTP_GET, [](AsyncWebServerRequest * request) {
     // TODO: Send current file values
-    request->send(200, "application/json", demoJson);
+    request->send(200, "application/json", jsonString);
   });
 
 
   AsyncCallbackJsonWebHandler* handler =
   new AsyncCallbackJsonWebHandler("/settings", [](AsyncWebServerRequest * request, JsonVariant & json) {
-    StaticJsonDocument<768> doc = json.as<JsonObject>();
+    doc = json.as<JsonObject>();
 
-    for (JsonObject feedItem : doc["feedTimes"].as<JsonArray>()) {
+    jsonString = "";
+    serializeJson(doc, jsonString);
+    Serial.println(jsonString);
+    getData();
+    setTime();
+    writeJsonStringToFile();
 
-      int feedTime = feedItem["feedTime"];
-      int feedDuration = feedItem["feedDuration"];
-
-      Serial.print("feedTime: ");
-      Serial.println(feedTime);
-      Serial.print("feedDuration: ");
-      Serial.println(feedDuration);
-
-    }
-
-    int pumpOnTime = doc["pumpTime"]["onTime"];
-    int pumpOffTime = doc["pumpTime"]["offTime"];
-
-    int aerationOnTime = doc["aerationTime"]["onTime"];
-    int aerationOffTime = doc["aerationTime"]["offTime"];
-
-    bool useSystemTime = doc["settings"]["useSystemTime"];
-    const char* customTime = doc["settings"]["customTime"];
-
-    Serial.print("pumpOnTime: ");
-    Serial.println(pumpOnTime);
-
-    Serial.print("aerationOnTime: ");
-    Serial.println(aerationOnTime);
-
-    Serial.print("useSystemTime: ");
-    Serial.println(useSystemTime);
-
-    Serial.print("customTime: ");
-    Serial.println(customTime);
-
-    request->send(200, "application/json", demoJson);
+    request->send(200, "application/json", jsonString);
   });
 
 
@@ -138,9 +66,11 @@ void setup()
 
 void loop()
 {
-  // controlFeed();
-  // controlPump();
-  // controlAir();
+  controlFeed();
+  controlPump();
+  controlAir();
+  getTime();
+  delay(1000);
 }
 
 /*

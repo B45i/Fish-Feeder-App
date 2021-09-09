@@ -1,0 +1,1 @@
+"{\"feedTimes\":[{\"feedTime\":5,\"feedDuration\":12},{\"feedTime\":8,\"feedDuration\":20}],\"pumpTime\":{\"onTime\":22,\"offTime\":44},\"aerationTime\":{\"onTime\":9,\"offTime\":21},\"settings\":{\"useSystemTime\":false,\"customTime\":\"08:53\"}}\n\n"

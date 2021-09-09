@@ -2,13 +2,8 @@ void getData()
 {
   while (!Serial)
     continue;
-
-  StaticJsonDocument<384> doc;
-
-  // Only for testing the file system.
-  data = "  {\r\n  \"feedTime\": [\r\n    {\r\n      \"feedTime\": 7,\r\n      \"feedDuration\": 10\r\n    }\r\n  ],\r\n  \"pumpTime\": {\r\n    \"onTime\": 20,\r\n    \"offTime\": 40\r\n  },\r\n  \"aerationTime\": {\r\n    \"onTime\": 7,\r\n    \"offTime\": 23\r\n  },\r\n  \"settings\": {\r\n    \"useSystemTime\": false,\r\n    \"customTime\": \"16:32\"\r\n  }\r\n}";
-  
-  DeserializationError error = deserializeJson(doc, data);
+ 
+  DeserializationError error = deserializeJson(doc, jsonString);
 
   if (error)
   {
@@ -17,18 +12,21 @@ void getData()
     return;
   }
 
-  static int feedTimeSize = doc["feedTime"].size();
+  static int feedTimeSize = doc["feedTimes"].size();
 
   for (int i = 0; i < feedTimeSize; i++)
   {
-    feedTimeArray[i] = doc["feedTime"][i]["feedTime"];
-    feedDurationArray[i] = doc["feedTime"][i]["feedDuration"];
+    feedTimeArray[i] = doc["feedTimes"][i]["feedTime"];
+    feedDurationArray[i] = doc["feedTimes"][i]["feedDuration"];
   }
 
   pumpOnDuration = doc["pumpTime"]["onTime"];       // 20
   pumpOffDuration = doc["pumpTime"]["offTime"];     // 40
   aerationOnTime = doc["aerationTime"]["onTime"];   // 7
   aerationOffTime = doc["aerationTime"]["offTime"]; // 18
+  
+  pumpOnDurationMillis = (pumpOnDuration * 60 * 1000);
+  pumpOffDurationMillis = (pumpOffDuration * 60 * 1000);
 
   bool settings_useSystemTime = doc["settings"]["useSystemTime"]; // false
   String settings_customTime = doc["settings"]["customTime"];     // "11:41"
@@ -50,7 +48,4 @@ void getData()
   Serial.println(settings_useSystemTime);
   Serial.println(set_hour);
   Serial.println(set_minute);
-
-  // Only for testing the file system.
-  writeDataToFile();
 }
