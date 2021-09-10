@@ -37,10 +37,7 @@ void setup()
 
 
   server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
-
-  server.serveStatic("/MaterialIcons-Regular.woff", SPIFFS, "/").setDefaultFile("MaterialIcons-Regular.woff") ;
   server.serveStatic("/MaterialIcons-Regular.woff2", SPIFFS, "/").setDefaultFile("MaterialIcons-Regular.woff2");
-  server.serveStatic("/MaterialIcons-Regular.ttf", SPIFFS, "/").setDefaultFile("MaterialIcons-Regular.ttf");
 
   server.on("/settings", HTTP_GET, [](AsyncWebServerRequest * request) {
     // TODO: Send current file values
