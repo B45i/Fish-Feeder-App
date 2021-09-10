@@ -1,4 +1,4 @@
-void readDataFromFile()
+void readJsonStringFromFile()
 {
   Serial.println(F("Inizializing FS..."));
   if (SPIFFS.begin())
@@ -14,14 +14,14 @@ void readDataFromFile()
   {
     Serial.println("file open failed");
   }
-  data = valueFile.readString();
+  jsonString = valueFile.readString();
   Serial.println("------ Data from file START -------");
-  Serial.println(data);
+  Serial.println(jsonString);
   Serial.println("------ Data from file END -------");
   valueFile.close();
 }
 
-void writeDataToFile()
+void writeJsonStringToFile()
 {
   File valueFile = SPIFFS.open("/values.txt", "w");
   if (!valueFile)
@@ -32,7 +32,7 @@ void writeDataToFile()
   }
   else
   {
-    valueFile.println(data);
+    valueFile.println(jsonString);
     valueFile.close();
   }
 }
