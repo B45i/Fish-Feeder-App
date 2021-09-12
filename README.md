@@ -1,4 +1,4 @@
-# AUTOMATED FISH FEEDER WITH PUMP CONTROLLER
+# Automated Fish Feeder With Pump Controller
 
 Device Working Video:
 [![Watch the video](https://img.youtube.com/vi/Zu94WblO_oU/maxresdefault.jpg)](https://youtube.com/shorts/Zu94WblO_oU?feature=share)
