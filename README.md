@@ -24,7 +24,7 @@ This reduces the power consumption considerably and avoids the clogging and fail
 They also need to power the Air Pump for a few hours at night to reduce the power consumption further.
 That feature is also included in this device.
 
-This device works on `ESP8266` SoC and EM Relays.
+This device works on `ESP8266` SoC, `DS3231 Real Time Clock` and `EM Relays`.
 
 ![](documentation/images/device-inside.jpg)
 
