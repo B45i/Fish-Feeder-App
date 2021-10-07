@@ -1,82 +1,30 @@
-#include <ESP8266WiFi.h>
+//LIBRARIES USED
+#include <RTClib.h> // https://github.com/adafruit/RTClib/actions
+#include <Wire.h>
+#include <ESP8266WiFi.h> 
 #include <ESPAsyncWebServer.h> //  https://github.com/me-no-dev/ESPAsyncWebServer and https://github.com/me-no-dev/ESPAsyncTCP
 #include <WiFiClient.h>
-#include "ArduinoJson.h"
+#include <ArduinoJson.h>  // https://github.com/bblanchon/ArduinoJson
 #include "AsyncJson.h"
 
-#include "configure.h"
-#include "fileSystem.h"
-#include "jsonParse.h"
-#include "rtcFile.h"
-#include "controller.h"
-
-AsyncWebServer server(80);
+#include "configure.h"  //VARIABLES USED IN THE CODE
+#include "functions.h" //FUNCTIONS USED IN THE CODE
 
 void setup()
 {
-  Serial.begin(115200);
-  SPIFFS.begin();
-  init_rtc();
-  initPins();
-  readJsonStringFromFile();
-  getData();
-
-
-
-
-  Serial.print("Setting soft-AP ... ");
-  Serial.println(WiFi.softAP("feeder", "feed1234") ? "Ready" : "Failed!");
-  IPAddress IP = WiFi.softAPIP();
-  Serial.print("AP IP address: ");
-  Serial.println(IP);
-
-  // Print ESP8266 Local IP Address
-  Serial.println(WiFi.localIP());
-
-
-
-
-  server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
-  server.serveStatic("/MaterialIcons-Regular.woff2", SPIFFS, "/").setDefaultFile("MaterialIcons-Regular.woff2");
-
-  server.on("/settings", HTTP_GET, [](AsyncWebServerRequest * request) {
-    // TODO: Send current file values
-    request->send(200, "application/json", jsonString);
-  });
-
-
-  AsyncCallbackJsonWebHandler* handler =
-  new AsyncCallbackJsonWebHandler("/settings", [](AsyncWebServerRequest * request, JsonVariant & json) {
-    doc = json.as<JsonObject>();
-
-    jsonString = "";
-    serializeJson(doc, jsonString);
-    Serial.println(jsonString);
-    getData();
-    setTime();
-    writeJsonStringToFile();
-
-    request->send(200, "application/json", jsonString);
-  });
-
-
-  server.addHandler(handler);
-
-  server.begin();
+  Serial.begin(115200); //for debugging purpose
+  SPIFFS.begin(); //begins the spiffs file system
+  init_rtc(); //begins rtc
+  initPins(); //initialise gpio pins
+  readJsonStringFromFile(); //read json string from spiffs
+  getData(); //get data and stores to respective variables by parsing json
+  setupWebServer(); // creates wifi access point and starts an async web server which serves an html page and handle requests.
 }
 
 void loop()
 {
-  controlFeed();
-  controlPump();
-  controlAir();
-  getTime();
-  delay(1000);
+  controlFeed();  //Feeder DC Motor controlling
+  controlPump();  //Water pump controlling
+  controlAir(); //Aerator controlling
+  getTime(); //Print time to the serial
 }
-
-/*
-  If the submit button is pressed,
-  store the json to the String variable 'data'
-  call the 'writeDataToFile()' to store the data to the flash.
-  call 'setTime()'
-*/
